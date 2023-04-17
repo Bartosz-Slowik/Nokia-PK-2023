@@ -13,7 +13,7 @@ namespace ue {
 using namespace ::testing;
 
 class BtsPortTestSuite : public Test {
-protected:
+ protected:
   const common::PhoneNumber PHONE_NUMBER{112};
   const common::BtsId BTS_ID{13121981ll};
   NiceMock<common::ILoggerMock> loggerMock;
@@ -31,7 +31,6 @@ protected:
     objectUnderTest.start(handlerMock);
   }
   ~BtsPortTestSuite() {
-
     EXPECT_CALL(transportMock, registerMessageCallback(IsNull()));
     EXPECT_CALL(transportMock, registerDisconnectedCallback(IsNull()));
     objectUnderTest.stop();
@@ -89,4 +88,4 @@ TEST_F(BtsPortTestSuite, shallHandleDisconnected) {
   EXPECT_CALL(handlerMock, handleDisconnected());
   disconnectCallback();
 }
-} // namespace ue
+}  // namespace ue

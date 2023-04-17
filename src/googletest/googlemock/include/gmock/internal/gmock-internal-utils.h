@@ -27,7 +27,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 // Google Mock - a framework for writing C++ mock classes.
 //
 // This file defines some utilities useful for implementing Google
@@ -56,9 +55,9 @@ namespace internal {
 // Silence MSVC C4100 (unreferenced formal parameter) and
 // C4805('==': unsafe mix of type 'const int' and type 'const bool')
 #ifdef _MSC_VER
-# pragma warning(push)
-# pragma warning(disable:4100)
-# pragma warning(disable:4805)
+#pragma warning(push)
+#pragma warning(disable : 4100)
+#pragma warning(disable : 4805)
 #endif
 
 // Joins a vector of strings as if they are fields of a tuple; returns
@@ -80,7 +79,9 @@ inline const typename Pointer::element_type* GetRawPointer(const Pointer& p) {
 }
 // This overloaded version is for the raw pointer case.
 template <typename Element>
-inline Element* GetRawPointer(Element* p) { return p; }
+inline Element* GetRawPointer(Element* p) {
+  return p;
+}
 
 // MSVC treats wchar_t as a native type usually, but treats it as the
 // same as unsigned short when the compiler option /Zc:wchar_t- is
@@ -89,7 +90,7 @@ inline Element* GetRawPointer(Element* p) { return p; }
 #if defined(_MSC_VER) && !defined(_NATIVE_WCHAR_T_DEFINED)
 // wchar_t is a typedef.
 #else
-# define GMOCK_WCHAR_T_IS_NATIVE_ 1
+#define GMOCK_WCHAR_T_IS_NATIVE_ 1
 #endif
 
 // In what follows, we use the term "kind" to indicate whether a type
@@ -97,18 +98,20 @@ inline Element* GetRawPointer(Element* p) { return p; }
 // or none of them.  This categorization is useful for determining
 // when a matcher argument type can be safely converted to another
 // type in the implementation of SafeMatcherCast.
-enum TypeKind {
-  kBool, kInteger, kFloatingPoint, kOther
-};
+enum TypeKind { kBool, kInteger, kFloatingPoint, kOther };
 
 // KindOf<T>::value is the kind of type T.
-template <typename T> struct KindOf {
+template <typename T>
+struct KindOf {
   enum { value = kOther };  // The default kind.
 };
 
 // This macro declares that the kind of 'type' is 'kind'.
 #define GMOCK_DECLARE_KIND_(type, kind) \
-  template <> struct KindOf<type> { enum { value = kind }; }
+  template <>                           \
+  struct KindOf<type> {                 \
+    enum { value = kind };              \
+  }
 
 GMOCK_DECLARE_KIND_(bool, kBool);
 
@@ -116,13 +119,13 @@ GMOCK_DECLARE_KIND_(bool, kBool);
 GMOCK_DECLARE_KIND_(char, kInteger);
 GMOCK_DECLARE_KIND_(signed char, kInteger);
 GMOCK_DECLARE_KIND_(unsigned char, kInteger);
-GMOCK_DECLARE_KIND_(short, kInteger);  // NOLINT
+GMOCK_DECLARE_KIND_(short, kInteger);           // NOLINT
 GMOCK_DECLARE_KIND_(unsigned short, kInteger);  // NOLINT
 GMOCK_DECLARE_KIND_(int, kInteger);
 GMOCK_DECLARE_KIND_(unsigned int, kInteger);
-GMOCK_DECLARE_KIND_(long, kInteger);  // NOLINT
-GMOCK_DECLARE_KIND_(unsigned long, kInteger);  // NOLINT
-GMOCK_DECLARE_KIND_(long long, kInteger);  // NOLINT
+GMOCK_DECLARE_KIND_(long, kInteger);                // NOLINT
+GMOCK_DECLARE_KIND_(unsigned long, kInteger);       // NOLINT
+GMOCK_DECLARE_KIND_(long long, kInteger);           // NOLINT
 GMOCK_DECLARE_KIND_(unsigned long long, kInteger);  // NOLINT
 
 #if GMOCK_WCHAR_T_IS_NATIVE_
@@ -137,8 +140,8 @@ GMOCK_DECLARE_KIND_(long double, kFloatingPoint);
 #undef GMOCK_DECLARE_KIND_
 
 // Evaluates to the kind of 'type'.
-#define GMOCK_KIND_OF_(type) \
-  static_cast< ::testing::internal::TypeKind>( \
+#define GMOCK_KIND_OF_(type)                  \
+  static_cast<::testing::internal::TypeKind>( \
       ::testing::internal::KindOf<type>::value)
 
 // LosslessArithmeticConvertibleImpl<kFromKind, From, kToKind, To>::value
@@ -185,22 +188,24 @@ using LosslessArithmeticConvertibleImpl = std::integral_constant<
 // implementation-defined when the above pre-condition is violated.
 template <typename From, typename To>
 using LosslessArithmeticConvertible =
-    LosslessArithmeticConvertibleImpl<GMOCK_KIND_OF_(From), From,
-                                      GMOCK_KIND_OF_(To), To>;
+    LosslessArithmeticConvertibleImpl<GMOCK_KIND_OF_(From),
+                                      From,
+                                      GMOCK_KIND_OF_(To),
+                                      To>;
 
 // This interface knows how to report a Google Mock failure (either
 // non-fatal or fatal).
 class FailureReporterInterface {
  public:
   // The type of a failure (either non-fatal or fatal).
-  enum FailureType {
-    kNonfatal, kFatal
-  };
+  enum FailureType { kNonfatal, kFatal };
 
   virtual ~FailureReporterInterface() {}
 
   // Reports a failure that occurred at the given source file location.
-  virtual void ReportFailure(FailureType type, const char* file, int line,
+  virtual void ReportFailure(FailureType type,
+                             const char* file,
+                             int line,
                              const std::string& message) = 0;
 };
 
@@ -212,11 +217,13 @@ GTEST_API_ FailureReporterInterface* GetFailureReporter();
 // as Google Mock might be used to mock the log sink itself.  We
 // inline this function to prevent it from showing up in the stack
 // trace.
-inline void Assert(bool condition, const char* file, int line,
+inline void Assert(bool condition,
+                   const char* file,
+                   int line,
                    const std::string& msg) {
   if (!condition) {
-    GetFailureReporter()->ReportFailure(FailureReporterInterface::kFatal,
-                                        file, line, msg);
+    GetFailureReporter()->ReportFailure(FailureReporterInterface::kFatal, file,
+                                        line, msg);
   }
 }
 inline void Assert(bool condition, const char* file, int line) {
@@ -225,7 +232,9 @@ inline void Assert(bool condition, const char* file, int line) {
 
 // Verifies that condition is true; generates a non-fatal failure if
 // condition is false.
-inline void Expect(bool condition, const char* file, int line,
+inline void Expect(bool condition,
+                   const char* file,
+                   int line,
                    const std::string& msg) {
   if (!condition) {
     GetFailureReporter()->ReportFailure(FailureReporterInterface::kNonfatal,
@@ -237,10 +246,7 @@ inline void Expect(bool condition, const char* file, int line) {
 }
 
 // Severity level of a log.
-enum LogSeverity {
-  kInfo = 0,
-  kWarning = 1
-};
+enum LogSeverity { kInfo = 0, kWarning = 1 };
 
 // Valid values for the --gmock_verbose flag.
 
@@ -262,7 +268,8 @@ GTEST_API_ bool LogIsVisible(LogSeverity severity);
 // stack_frames_to_skip is treated as 0, since we don't know which
 // function calls will be inlined by the compiler and need to be
 // conservative.
-GTEST_API_ void Log(LogSeverity severity, const std::string& message,
+GTEST_API_ void Log(LogSeverity severity,
+                    const std::string& message,
                     int stack_frames_to_skip);
 
 // A marker class that is used to resolve parameterless expectations to the
@@ -283,8 +290,8 @@ GTEST_API_ WithoutMatchers GetWithoutMatchers();
 // Disable MSVC warnings for infinite recursion, since in this case the
 // the recursion is unreachable.
 #ifdef _MSC_VER
-# pragma warning(push)
-# pragma warning(disable:4717)
+#pragma warning(push)
+#pragma warning(disable : 4717)
 #endif
 
 // Invalid<T>() is usable as an expression of type T, but will terminate
@@ -302,7 +309,7 @@ inline T Invalid() {
 }
 
 #ifdef _MSC_VER
-# pragma warning(pop)
+#pragma warning(pop)
 #endif
 
 // Given a raw type (i.e. having no top-level reference or const
@@ -361,7 +368,7 @@ class StlContainerView<Element[N]> {
 // This specialization is used when RawContainer is a native array
 // represented as a (pointer, size) tuple.
 template <typename ElementPointer, typename Size>
-class StlContainerView< ::std::tuple<ElementPointer, Size> > {
+class StlContainerView<::std::tuple<ElementPointer, Size>> {
  public:
   typedef typename std::remove_const<
       typename std::pointer_traits<ElementPointer>::element_type>::type
@@ -381,7 +388,8 @@ class StlContainerView< ::std::tuple<ElementPointer, Size> > {
 
 // The following specialization prevents the user from instantiating
 // StlContainer with a reference type.
-template <typename T> class StlContainerView<T&>;
+template <typename T>
+class StlContainerView<T&>;
 
 // A type transform to remove constness from the first part of a pair.
 // Pairs like that are used as the value_type of associative containers,
@@ -393,7 +401,7 @@ struct RemoveConstFromKey {
 
 // Partially specialized to remove constness from std::pair<const K, V>.
 template <typename K, typename V>
-struct RemoveConstFromKey<std::pair<const K, V> > {
+struct RemoveConstFromKey<std::pair<const K, V>> {
   typedef std::pair<K, V> type;
 };
 
@@ -410,7 +418,8 @@ auto ApplyImpl(F&& f, Tuple&& args, IndexSequence<Idx...>) -> decltype(
 // Apply the function to a tuple of arguments.
 template <typename F, typename Tuple>
 auto Apply(F&& f, Tuple&& args) -> decltype(
-    ApplyImpl(std::forward<F>(f), std::forward<Tuple>(args),
+    ApplyImpl(std::forward<F>(f),
+              std::forward<Tuple>(args),
               MakeIndexSequence<std::tuple_size<
                   typename std::remove_reference<Tuple>::type>::value>())) {
   return ApplyImpl(std::forward<F>(f), std::forward<Tuple>(args),
@@ -450,7 +459,7 @@ template <typename R, typename... Args>
 constexpr size_t Function<R(Args...)>::ArgumentCount;
 
 #ifdef _MSC_VER
-# pragma warning(pop)
+#pragma warning(pop)
 #endif
 
 }  // namespace internal

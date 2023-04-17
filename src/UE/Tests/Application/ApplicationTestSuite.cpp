@@ -1,19 +1,19 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <memory>
 #include "Application.hpp"
 #include "Messages/PhoneNumber.hpp"
 #include "Mocks/IBtsPortMock.hpp"
 #include "Mocks/ILoggerMock.hpp"
 #include "Mocks/ITimerPortMock.hpp"
 #include "Mocks/IUserPortMock.hpp"
-#include <memory>
 
 namespace ue {
 using namespace ::testing;
 
 class ApplicationTestSuite : public Test {
-protected:
+ protected:
   const common::PhoneNumber PHONE_NUMBER{112};
   const common::BtsId BTS_ID{211};
   NiceMock<common::ILoggerMock> loggerMock;
@@ -95,4 +95,4 @@ TEST_F(ApplicationConnectedTestSuite, shallReattach) {
   makeConnected();
 }
 
-} // namespace ue
+}  // namespace ue

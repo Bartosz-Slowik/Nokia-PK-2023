@@ -37,8 +37,7 @@
 #include "gtest/internal/gtest-internal.h"
 #include "gtest/internal/gtest-string.h"
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
-/* class A needs to have dll-interface to be used by clients of class B */)
+GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
 
@@ -60,7 +59,9 @@ class GTEST_API_ TestPartResult {
   // C'tor.  TestPartResult does NOT have a default constructor.
   // Always use this constructor (with parameters) to create a
   // TestPartResult object.
-  TestPartResult(Type a_type, const char* a_file_name, int a_line_number,
+  TestPartResult(Type a_type,
+                 const char* a_file_name,
+                 int a_line_number,
                  const char* a_message)
       : type_(a_type),
         file_name_(a_file_name == nullptr ? "" : a_file_name),
@@ -168,6 +169,7 @@ class GTEST_API_ HasNewFatalFailureHelper
   ~HasNewFatalFailureHelper() override;
   void ReportTestPartResult(const TestPartResult& result) override;
   bool has_new_fatal_failure() const { return has_new_fatal_failure_; }
+
  private:
   bool has_new_fatal_failure_;
   TestPartResultReporterInterface* original_reporter_;

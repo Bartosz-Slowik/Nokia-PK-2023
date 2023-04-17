@@ -54,8 +54,7 @@ const char kInternalRunDeathTestFlag[] = "internal_run_death_test";
 
 #if GTEST_HAS_DEATH_TEST
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
-/* class A needs to have dll-interface to be used by clients of class B */)
+GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
 // DeathTest is a class that hides much of the complexity of the
 // GTEST_DEATH_TEST_ macro.  It is abstract; its static Create method
@@ -80,16 +79,20 @@ class GTEST_API_ DeathTest {
   // argument is set.  If the death test should be skipped, the pointer
   // is set to NULL; otherwise, it is set to the address of a new concrete
   // DeathTest object that controls the execution of the current test.
-  static bool Create(const char* statement, Matcher<const std::string&> matcher,
-                     const char* file, int line, DeathTest** test);
+  static bool Create(const char* statement,
+                     Matcher<const std::string&> matcher,
+                     const char* file,
+                     int line,
+                     DeathTest** test);
   DeathTest();
-  virtual ~DeathTest() { }
+  virtual ~DeathTest() {}
 
   // A helper class that aborts a death test when it's deleted.
   class ReturnSentinel {
    public:
-    explicit ReturnSentinel(DeathTest* test) : test_(test) { }
+    explicit ReturnSentinel(DeathTest* test) : test_(test) {}
     ~ReturnSentinel() { test_->Abort(TEST_ENCOUNTERED_RETURN_STATEMENT); }
+
    private:
     DeathTest* const test_;
     GTEST_DISALLOW_COPY_AND_ASSIGN_(ReturnSentinel);
@@ -145,17 +148,22 @@ GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 // Factory interface for death tests.  May be mocked out for testing.
 class DeathTestFactory {
  public:
-  virtual ~DeathTestFactory() { }
+  virtual ~DeathTestFactory() {}
   virtual bool Create(const char* statement,
-                      Matcher<const std::string&> matcher, const char* file,
-                      int line, DeathTest** test) = 0;
+                      Matcher<const std::string&> matcher,
+                      const char* file,
+                      int line,
+                      DeathTest** test) = 0;
 };
 
 // A concrete DeathTestFactory implementation for normal use.
 class DefaultDeathTestFactory : public DeathTestFactory {
  public:
-  bool Create(const char* statement, Matcher<const std::string&> matcher,
-              const char* file, int line, DeathTest** test) override;
+  bool Create(const char* statement,
+              Matcher<const std::string&> matcher,
+              const char* file,
+              int line,
+              DeathTest** test) override;
 };
 
 // Returns true if exit_status describes a process that was terminated
@@ -186,62 +194,62 @@ inline Matcher<const ::std::string&> MakeDeathTestMatcher(
 
 // Traps C++ exceptions escaping statement and reports them as test
 // failures. Note that trapping SEH exceptions is not implemented here.
-# if GTEST_HAS_EXCEPTIONS
-#  define GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, death_test) \
-  try { \
-    GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement); \
-  } catch (const ::std::exception& gtest_exception) { \
-    fprintf(\
-        stderr, \
-        "\n%s: Caught std::exception-derived exception escaping the " \
-        "death test statement. Exception message: %s\n", \
+#if GTEST_HAS_EXCEPTIONS
+#define GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, death_test)           \
+  try {                                                                      \
+    GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);               \
+  } catch (const ::std::exception& gtest_exception) {                        \
+    fprintf(                                                                 \
+        stderr,                                                              \
+        "\n%s: Caught std::exception-derived exception escaping the "        \
+        "death test statement. Exception message: %s\n",                     \
         ::testing::internal::FormatFileLocation(__FILE__, __LINE__).c_str(), \
-        gtest_exception.what()); \
-    fflush(stderr); \
+        gtest_exception.what());                                             \
+    fflush(stderr);                                                          \
     death_test->Abort(::testing::internal::DeathTest::TEST_THREW_EXCEPTION); \
-  } catch (...) { \
+  } catch (...) {                                                            \
     death_test->Abort(::testing::internal::DeathTest::TEST_THREW_EXCEPTION); \
   }
 
-# else
-#  define GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, death_test) \
+#else
+#define GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, death_test) \
   GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement)
 
-# endif
+#endif
 
 // This macro is for implementing ASSERT_DEATH*, EXPECT_DEATH*,
 // ASSERT_EXIT*, and EXPECT_EXIT*.
-#define GTEST_DEATH_TEST_(statement, predicate, regex_or_matcher, fail)        \
-  GTEST_AMBIGUOUS_ELSE_BLOCKER_                                                \
-  if (::testing::internal::AlwaysTrue()) {                                     \
-    ::testing::internal::DeathTest* gtest_dt;                                  \
-    if (!::testing::internal::DeathTest::Create(                               \
-            #statement,                                                        \
-            ::testing::internal::MakeDeathTestMatcher(regex_or_matcher),       \
-            __FILE__, __LINE__, &gtest_dt)) {                                  \
-      goto GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__);                        \
-    }                                                                          \
-    if (gtest_dt != nullptr) {                                                 \
-      std::unique_ptr< ::testing::internal::DeathTest> gtest_dt_ptr(gtest_dt); \
-      switch (gtest_dt->AssumeRole()) {                                        \
-        case ::testing::internal::DeathTest::OVERSEE_TEST:                     \
-          if (!gtest_dt->Passed(predicate(gtest_dt->Wait()))) {                \
-            goto GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__);                  \
-          }                                                                    \
-          break;                                                               \
-        case ::testing::internal::DeathTest::EXECUTE_TEST: {                   \
-          ::testing::internal::DeathTest::ReturnSentinel gtest_sentinel(       \
-              gtest_dt);                                                       \
-          GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, gtest_dt);            \
-          gtest_dt->Abort(::testing::internal::DeathTest::TEST_DID_NOT_DIE);   \
-          break;                                                               \
-        }                                                                      \
-        default:                                                               \
-          break;                                                               \
-      }                                                                        \
-    }                                                                          \
-  } else                                                                       \
-    GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__)                                \
+#define GTEST_DEATH_TEST_(statement, predicate, regex_or_matcher, fail)       \
+  GTEST_AMBIGUOUS_ELSE_BLOCKER_                                               \
+  if (::testing::internal::AlwaysTrue()) {                                    \
+    ::testing::internal::DeathTest* gtest_dt;                                 \
+    if (!::testing::internal::DeathTest::Create(                              \
+            #statement,                                                       \
+            ::testing::internal::MakeDeathTestMatcher(regex_or_matcher),      \
+            __FILE__, __LINE__, &gtest_dt)) {                                 \
+      goto GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__);                       \
+    }                                                                         \
+    if (gtest_dt != nullptr) {                                                \
+      std::unique_ptr<::testing::internal::DeathTest> gtest_dt_ptr(gtest_dt); \
+      switch (gtest_dt->AssumeRole()) {                                       \
+        case ::testing::internal::DeathTest::OVERSEE_TEST:                    \
+          if (!gtest_dt->Passed(predicate(gtest_dt->Wait()))) {               \
+            goto GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__);                 \
+          }                                                                   \
+          break;                                                              \
+        case ::testing::internal::DeathTest::EXECUTE_TEST: {                  \
+          ::testing::internal::DeathTest::ReturnSentinel gtest_sentinel(      \
+              gtest_dt);                                                      \
+          GTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, gtest_dt);           \
+          gtest_dt->Abort(::testing::internal::DeathTest::TEST_DID_NOT_DIE);  \
+          break;                                                              \
+        }                                                                     \
+        default:                                                              \
+          break;                                                              \
+      }                                                                       \
+    }                                                                         \
+  } else                                                                      \
+    GTEST_CONCAT_TOKEN_(gtest_label_, __LINE__)                               \
         : fail(::testing::internal::DeathTest::LastMessage())
 // The symbol "fail" here expands to something into which a message
 // can be streamed.
@@ -269,8 +277,7 @@ class InternalRunDeathTestFlag {
                            int a_line,
                            int an_index,
                            int a_write_fd)
-      : file_(a_file), line_(a_line), index_(an_index),
-        write_fd_(a_write_fd) {}
+      : file_(a_file), line_(a_line), index_(an_index), write_fd_(a_write_fd) {}
 
   ~InternalRunDeathTestFlag() {
     if (write_fd_ >= 0)

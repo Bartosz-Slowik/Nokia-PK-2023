@@ -40,8 +40,7 @@ using testing::Test;
 // and gtest-typed-test2_test.cc.
 
 template <typename T>
-class ContainerTest : public Test {
-};
+class ContainerTest : public Test {};
 
 TYPED_TEST_SUITE_P(ContainerTest);
 
@@ -55,6 +54,7 @@ TYPED_TEST_P(ContainerTest, InitialSizeIsZero) {
 }
 
 REGISTER_TYPED_TEST_SUITE_P(ContainerTest,
-                            CanBeDefaultConstructed, InitialSizeIsZero);
+                            CanBeDefaultConstructed,
+                            InitialSizeIsZero);
 
 #endif  // GOOGLETEST_TEST_GTEST_TYPED_TEST_TEST_H_

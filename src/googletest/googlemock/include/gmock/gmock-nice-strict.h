@@ -27,7 +27,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 // Implements class templates NiceMock, NaggyMock, and StrictMock.
 //
 // Given a mock class MockFoo that is created using Google Mock,
@@ -162,7 +161,8 @@ class GTEST_INTERNAL_EMPTY_BASE_CLASS NiceMock
 
   template <typename TArg1, typename TArg2, typename... An>
   NiceMock(TArg1&& arg1, TArg2&& arg2, An&&... args)
-      : MockClass(std::forward<TArg1>(arg1), std::forward<TArg2>(arg2),
+      : MockClass(std::forward<TArg1>(arg1),
+                  std::forward<TArg2>(arg2),
                   std::forward<An>(args)...) {
     static_assert(sizeof(*this) == sizeof(MockClass),
                   "The impl subclass shouldn't introduce any padding");
@@ -203,7 +203,8 @@ class GTEST_INTERNAL_EMPTY_BASE_CLASS NaggyMock
 
   template <typename TArg1, typename TArg2, typename... An>
   NaggyMock(TArg1&& arg1, TArg2&& arg2, An&&... args)
-      : MockClass(std::forward<TArg1>(arg1), std::forward<TArg2>(arg2),
+      : MockClass(std::forward<TArg1>(arg1),
+                  std::forward<TArg2>(arg2),
                   std::forward<An>(args)...) {
     static_assert(sizeof(*this) == sizeof(MockClass),
                   "The impl subclass shouldn't introduce any padding");
@@ -244,7 +245,8 @@ class GTEST_INTERNAL_EMPTY_BASE_CLASS StrictMock
 
   template <typename TArg1, typename TArg2, typename... An>
   StrictMock(TArg1&& arg1, TArg2&& arg2, An&&... args)
-      : MockClass(std::forward<TArg1>(arg1), std::forward<TArg2>(arg2),
+      : MockClass(std::forward<TArg1>(arg1),
+                  std::forward<TArg2>(arg2),
                   std::forward<An>(args)...) {
     static_assert(sizeof(*this) == sizeof(MockClass),
                   "The impl subclass shouldn't introduce any padding");

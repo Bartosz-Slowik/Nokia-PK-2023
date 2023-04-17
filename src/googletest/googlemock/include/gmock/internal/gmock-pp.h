@@ -83,8 +83,9 @@
                              GMOCK_PP_HAS_COMMA(GMOCK_PP_COMMA __VA_ARGS__()))
 
 // Evaluates to _Then if _Cond is 1 and _Else if _Cond is 0.
-#define GMOCK_PP_IF(_Cond, _Then, _Else) \
-  GMOCK_PP_CAT(GMOCK_PP_INTERNAL_IF_, _Cond)(_Then, _Else)
+#define GMOCK_PP_IF(_Cond, _Then, _Else)     \
+  GMOCK_PP_CAT(GMOCK_PP_INTERNAL_IF_, _Cond) \
+  (_Then, _Else)
 
 // Similar to GMOCK_PP_IF but takes _Then and _Else in parentheses.
 //

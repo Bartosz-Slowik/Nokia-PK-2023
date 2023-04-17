@@ -54,8 +54,10 @@ struct ThisRefAdjuster {
   using AdjustT = typename std::conditional<
       std::is_const<typename std::remove_reference<Pattern>::type>::value,
       typename std::conditional<std::is_lvalue_reference<Pattern>::value,
-                                const T&, const T&&>::type,
-      typename std::conditional<std::is_lvalue_reference<Pattern>::value, T&,
+                                const T&,
+                                const T&&>::type,
+      typename std::conditional<std::is_lvalue_reference<Pattern>::value,
+                                T&,
                                 T&&>::type>::type;
 
   template <typename MockType>
@@ -254,8 +256,7 @@ using internal::FunctionMocker;
 #define GMOCK_INTERNAL_GET_VALUE_CALLTYPE(_arg) \
   GMOCK_INTERNAL_GET_VALUE_CALLTYPE_I(          \
       GMOCK_PP_CAT(GMOCK_INTERNAL_IS_CALLTYPE_HELPER_, _arg))
-#define GMOCK_INTERNAL_GET_VALUE_CALLTYPE_I(_arg) \
-  GMOCK_PP_IDENTITY _arg
+#define GMOCK_INTERNAL_GET_VALUE_CALLTYPE_I(_arg) GMOCK_PP_IDENTITY _arg
 
 #define GMOCK_INTERNAL_IS_CALLTYPE_HELPER_Calltype
 
