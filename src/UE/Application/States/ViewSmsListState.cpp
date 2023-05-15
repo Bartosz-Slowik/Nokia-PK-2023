@@ -8,12 +8,12 @@ ViewSmsListState::ViewSmsListState(Context& context) : ConnectedState(context) {
   context.user.showSmsList();
 }
 
-void ViewSmsListState::showSmsButton() {
+void ViewSmsListState::acceptButton() {
   int action = context.user.getAction();
   context.setState<ViewSmsState>(action);
 }
 
-void ViewSmsListState::closeSmsButton() {
+void ViewSmsListState::rejectButton() {
   context.setState<ConnectedState>();
 }
 }  // namespace ue
