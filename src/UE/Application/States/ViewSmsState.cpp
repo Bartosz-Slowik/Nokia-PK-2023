@@ -9,9 +9,9 @@ ViewSmsState::ViewSmsState(Context& context, size_t index)
   context.user.showSms(index);
 }
 
-void ViewSmsState::showSmsButton() {}
+void ViewSmsState::acceptButton() {}
 
-void ViewSmsState::closeSmsButton() {
+void ViewSmsState::rejectButton() {
   context.setState<ViewSmsListState>();
 }
 }  // namespace ue
