@@ -19,11 +19,11 @@ class ApplicationTestSuite : public Test {
   const common::PhoneNumber PHONE_NUMBER{112};
   const common::BtsId BTS_ID{211};
   NiceMock<common::ILoggerMock> loggerMock;
-  StrictMock<IBtsPortMock> btsPortMock;
-  StrictMock<IUserPortMock> userPortMock;
-  StrictMock<ITimerPortMock> timerPortMock;
-  StrictMock<ISmsDbMock> ismsDbMock;
-  StrictMock<SmsDbMock> smsDbMock;
+  NiceMock<IBtsPortMock> btsPortMock;
+  NiceMock<IUserPortMock> userPortMock;
+  NiceMock<ITimerPortMock> timerPortMock;
+  NiceMock<ISmsDbMock> ismsDbMock;
+  NiceMock<SmsDbMock> smsDbMock;
 
   Expectation expectNotConnectedOnStart =
       EXPECT_CALL(userPortMock, showNotConnected());
@@ -106,6 +106,7 @@ TEST_F(ApplicationConnectedTestSuite, shallHandleSms) {
   };
 
   EXPECT_CALL(userPortMock, showNewSmsNotification());
+  EXPECT_CALL(userPortMock, getSmsDb()).WillOnce(ReturnRef(smsDbMock));
   EXPECT_CALL(smsDbMock, addReceivedSms(sms));
   objectUnderTest.handleSms(sms);
 }
