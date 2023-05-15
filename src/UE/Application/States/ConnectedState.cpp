@@ -11,8 +11,8 @@ namespace ue {
 
 ConnectedState::ConnectedState(Context& context)
     : BaseState(context, "ConnectedState") {
-  context.user.acceptCallback([this] { showSmsButton(); });
-  context.user.rejectCallback([this] { closeSmsButton(); });
+  context.user.acceptCallback([this] { acceptButton(); });
+  context.user.rejectCallback([this] { rejectButton(); });
   // this should show connected status
   context.user.showConnected();
 }
@@ -27,7 +27,7 @@ void ConnectedState::handleSms(const Sms& sms) {
   context.user.getSmsDb().addReceivedSms(sms);
 }
 
-void ConnectedState::showSmsButton() {
+void ConnectedState::acceptButton() {
   switch (context.user.getAction()) {
     case VIEW_SMS_LIST:
       context.setState<ViewSmsListState>();
@@ -35,19 +35,59 @@ void ConnectedState::showSmsButton() {
     case SENDING_SMS:
       context.setState<SendingSmsState>();
       break;
+    case DIAL:
+      context.user.showEnterPhoneNumber();
+      break;
   }
 }
 
-void ConnectedState::closeSmsButton() {
-  //    switch (context.user.getAction()) {
-  //      case SENDING_SMS:
-  //        context.setState<NotConnectedState>();
-  //        break;
-  //    }
-}
+void ConnectedState::rejectButton() {}
 
 void ConnectedState::handleFailedSmsSend() {
   context.smsDb.markLastSmsSentAsFailed();
+}
+
+void ConnectedState::handleSendCallRequest(
+    common::PhoneNumber receiverPhoneNumber) {
+  using namespace std::chrono_literals;
+  context.timer.startTimer(60000ms);
+  context.bts.sendCallRequest(receiverPhoneNumber);
+  setSenderPhoneNumber(receiverPhoneNumber);
+  context.user.showDialing(receiverPhoneNumber);
+}
+
+void ConnectedState::handleSendCallAccept(common::PhoneNumber phoneNumber) {
+  context.timer.stopTimer();
+  setSenderPhoneNumber({});
+  context.user.callAchieved(phoneNumber);
+  context.bts.sendCallAccept(phoneNumber);
+  // ToDo Implement TalkingState and set it here
+}
+
+void ConnectedState::setSenderPhoneNumber(common::PhoneNumber phoneNumber) {
+  this->senderPhoneNumber = phoneNumber;
+}
+
+void ConnectedState::handleCallRequest(common::PhoneNumber phoneNumber) {}
+
+void ConnectedState::handleSendCallDrop(
+    common::PhoneNumber receiverPhoneNumber) {
+  context.timer.stopTimer();
+  context.bts.sendCallDrop(senderPhoneNumber);
+  setSenderPhoneNumber({});
+  context.user.showConnected();
+}
+
+void ConnectedState::handleUnknownRecipientCallRequest(
+    common::PhoneNumber phoneNumber) {
+  context.timer.stopTimer();
+  context.user.showPartnerNotAvailable(senderPhoneNumber);
+  setSenderPhoneNumber({});
+}
+
+void ConnectedState::handleTimeout() {
+  context.user.showConnected();
+  handleSendCallDrop({});
 }
 
 }  // namespace ue

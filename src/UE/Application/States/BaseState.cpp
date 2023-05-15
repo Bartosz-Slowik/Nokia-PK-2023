@@ -39,4 +39,26 @@ void BaseState::handleFailedSmsSend() {
   logger.logError("Unexpected: handleFailedSmsSend");
 }
 
+void BaseState::handleSendCallRequest(common::PhoneNumber receiverPhoneNumber) {
+  logger.logError("Uexpected: handleCallRequest: ", receiverPhoneNumber);
+}
+
+void BaseState::handleSendCallDrop(common::PhoneNumber receiverPhoneNumber) {
+  logger.logError("Uexpected: handleCallDropSender: ", receiverPhoneNumber);
+}
+
+void BaseState::handleCallRequest(common::PhoneNumber phoneNumber) {
+  logger.logError("Uexpected: handleCallRequest: ", phoneNumber);
+}
+
+void BaseState::handleSendCallAccept(common::PhoneNumber receiverPhoneNumber) {
+  logger.logError("Uexpected: handleCallAccept: ", receiverPhoneNumber);
+}
+
+void BaseState::handleUnknownRecipientCallRequest(
+    common::PhoneNumber phoneNumber) {
+  logger.logError("Uexpected: handleUnknownRecipientCallRequest: ",
+                  phoneNumber);
+}
+
 }  // namespace ue

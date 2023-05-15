@@ -59,10 +59,23 @@ void BtsPort::handleMessage(BinaryMessage msg) {
         }
         break;
       }
+      case common::MessageId::CallRequest: {
+        handler->handleCallRequest(from);
+        break;
+      }
+      case common::MessageId::CallAccepted: {
+        break;
+      }
+      case common::MessageId::CallDropped: {
+        break;
+      }
       case common::MessageId::UnknownRecipient: {
         auto failHeader = reader.readMessageHeader();
         if (failHeader.messageId == common::MessageId::Sms)
           handler->handleFailedSmsSend();
+        else
+          handler->handleUnknownRecipientCallRequest(from);
+        logger.logInfo("Handle for unknown recipient");
       }
       default:
         logger.logError("unknow message: ", msgId, ", from: ", from);
@@ -92,6 +105,26 @@ void BtsPort::sendSms(const Sms& sms) {
   outgoingMessage.writeText(sms.getText());
 
   transport.sendMessage(outgoingMessage.getMessage());
+}
+
+void BtsPort::sendCallRequest(common::PhoneNumber receiverPhoneNumber) {
+  common::OutgoingMessage msg{common::MessageId::CallRequest, phoneNumber,
+                              receiverPhoneNumber};
+  transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendCallAccept(common::PhoneNumber receiverPhoneNumber) {
+  logger.logDebug("sendCallAccept: ", receiverPhoneNumber);
+  common::OutgoingMessage msg{common::MessageId::CallAccepted, phoneNumber,
+                              receiverPhoneNumber};
+  transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendCallDrop(common::PhoneNumber receiverPhoneNumber) {
+  logger.logDebug("sendCallDrop: ", receiverPhoneNumber);
+  common::OutgoingMessage msg{common::MessageId::CallDropped, phoneNumber,
+                              receiverPhoneNumber};
+  transport.sendMessage(msg.getMessage());
 }
 
 }  // namespace ue

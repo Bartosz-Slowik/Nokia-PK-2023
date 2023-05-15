@@ -13,8 +13,6 @@ class Sms {
   std::chrono::time_point<std::chrono::system_clock> receiveTime;
 
  public:
-  Sms();
-
   Sms(const std::string& text,
       const common::PhoneNumber& from,
       const common::PhoneNumber& to);

@@ -45,4 +45,26 @@ void Application::handleFailedSmsSend() {
   context.state->handleFailedSmsSend();
 }
 
+void Application::handleSendCallRequest(
+    common::PhoneNumber receiverPhoneNumber) {
+  context.state->handleSendCallRequest(receiverPhoneNumber);
+}
+
+void Application::handleSendCallDrop(common::PhoneNumber receiverPhoneNumber) {
+  context.state->handleSendCallDrop(receiverPhoneNumber);
+}
+
+void Application::handleCallRequest(common::PhoneNumber phoneNumber) {
+  context.state->handleCallRequest(phoneNumber);
+}
+
+void Application::handleSendCallAccept(common::PhoneNumber phoneNumber) {
+  context.state->handleSendCallAccept(phoneNumber);
+}
+
+void Application::handleUnknownRecipientCallRequest(
+    common::PhoneNumber phoneNumber) {
+  context.state->handleUnknownRecipientCallRequest(phoneNumber);
+}
+
 }  // namespace ue

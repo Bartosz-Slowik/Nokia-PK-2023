@@ -11,7 +11,7 @@ class SendingSmsState : public ConnectedState {
  public:
   SendingSmsState(Context& context);
 
-  void showSmsButton() override;
-  void closeSmsButton() override;
+  void acceptButton() override;
+  void rejectButton() override;
 };
 }  // namespace ue

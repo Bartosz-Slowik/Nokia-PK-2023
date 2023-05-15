@@ -7,7 +7,7 @@ SendingSmsState::SendingSmsState(Context& context)
   iSmsComposeMode.clearSmsText();
 }
 
-void SendingSmsState::showSmsButton() {
+void SendingSmsState::acceptButton() {
   std::string text = iSmsComposeMode.getSmsText();
   common::PhoneNumber toPhoneNumber = iSmsComposeMode.getPhoneNumber();
   Sms sms = Sms{text, context.bts.getOwnPhoneNumber(), toPhoneNumber, true,
@@ -17,7 +17,7 @@ void SendingSmsState::showSmsButton() {
   context.setState<ConnectedState>();
 }
 
-void SendingSmsState::closeSmsButton() {
+void SendingSmsState::rejectButton() {
   context.setState<ConnectedState>();
 }
 

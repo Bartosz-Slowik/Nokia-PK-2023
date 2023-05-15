@@ -8,6 +8,9 @@ namespace ue {
 class IUserEventsHandler {
  public:
   virtual ~IUserEventsHandler() = default;
+  virtual void handleSendCallDrop(common::PhoneNumber) = 0;
+  virtual void handleSendCallRequest(common::PhoneNumber) = 0;
+  virtual void handleSendCallAccept(common::PhoneNumber) = 0;
 };
 
 class IUserPort {
@@ -25,6 +28,10 @@ class IUserPort {
   virtual int getAction() = 0;
   virtual void acceptCallback(IUeGui::Callback acceptCallback) = 0;
   virtual void rejectCallback(IUeGui::Callback rejectCallback) = 0;
+  virtual void showEnterPhoneNumber() = 0;
+  virtual void showDialing(common::PhoneNumber) = 0;
+  virtual void callAchieved(common::PhoneNumber) = 0;
+  virtual void showPartnerNotAvailable(common::PhoneNumber) = 0;
 };
 
 }  // namespace ue
