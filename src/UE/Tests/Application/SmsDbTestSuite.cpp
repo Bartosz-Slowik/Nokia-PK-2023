@@ -15,7 +15,7 @@ class SmsDbTestSuite : public Test {
 };
 
 TEST_F(SmsDbTestSuite, shallAddReceivedSms) {
-  const Sms sms{PHONE_NUMBER, "TEST 101010 lol"};
+  const Sms sms{"TEST 101010 lol", PHONE_NUMBER, PHONE_NUMBER};
   objectUnderTest.addReceivedSms(sms);
 
   const auto& messages = objectUnderTest.getSmsMessages();

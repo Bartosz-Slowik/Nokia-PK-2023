@@ -9,6 +9,7 @@
 #include "Mocks/ISmsDbMock.hpp"
 #include "Mocks/ITimerPortMock.hpp"
 #include "Mocks/IUserPortMock.hpp"
+#include "Mocks/SmsDbMock.hpp"
 
 namespace ue {
 using namespace ::testing;
@@ -21,7 +22,8 @@ class ApplicationTestSuite : public Test {
   StrictMock<IBtsPortMock> btsPortMock;
   StrictMock<IUserPortMock> userPortMock;
   StrictMock<ITimerPortMock> timerPortMock;
-  StrictMock<ISmsDbMock> smsDbMock;
+  StrictMock<ISmsDbMock> ismsDbMock;
+  StrictMock<SmsDbMock> smsDbMock;
 
   Expectation expectNotConnectedOnStart =
       EXPECT_CALL(userPortMock, showNotConnected());
@@ -97,7 +99,11 @@ TEST_F(ApplicationConnectedTestSuite, shallReattach) {
   makeConnected();
 }
 TEST_F(ApplicationConnectedTestSuite, shallHandleSms) {
-  Sms sms{PHONE_NUMBER, "example sms message"};
+  Sms sms{
+      "example sms message",
+      PHONE_NUMBER,
+      PHONE_NUMBER,
+  };
 
   EXPECT_CALL(userPortMock, showNewSmsNotification());
   EXPECT_CALL(smsDbMock, addReceivedSms(sms));

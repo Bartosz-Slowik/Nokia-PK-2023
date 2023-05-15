@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "ISmsDb.hpp"
+#include "Sms.hpp"
 
 namespace ue {
 
@@ -14,6 +15,8 @@ class SmsDb : public ISmsDb {
 
   void addReceivedSms(const Sms& sms) override;
   const SmsMessages& getSmsMessages() { return smsMessages; }
+  void addSms(const Sms& sms) override;
+  void markLastSmsSentAsFailed() override;
 
  private:
   SmsMessages smsMessages;

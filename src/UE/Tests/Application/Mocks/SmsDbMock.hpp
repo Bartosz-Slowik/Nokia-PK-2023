@@ -2,18 +2,17 @@
 
 #include <gmock/gmock.h>
 
-#include "ISmsDb.hpp"
+#include "SmsDb.hpp"
 
 namespace ue {
 
-class ISmsDbMock : public ISmsDb {
+class SmsDbMock : public SmsDb {
  public:
-  ISmsDbMock() = default;
-  ~ISmsDbMock() override = default;
+  SmsDbMock() = default;
+  ~SmsDbMock() override = default;
 
   MOCK_METHOD(void, addReceivedSms, (const Sms&), (final));
   MOCK_METHOD(void, addSms, (const Sms&), (final));
-  MOCK_METHOD(void, markLastSmsSentAsFailed, (), (final));
 };
 
 }  // namespace ue
