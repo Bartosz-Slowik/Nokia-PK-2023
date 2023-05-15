@@ -23,6 +23,9 @@ class UserPort : public IUserPort {
   void showConnecting() override;
   void showConnected() override;
   void showNewSmsNotification() override;
+  void showSms(size_t index) override;
+  void showSmsList() override;
+  SmsDb& getSmsDb() override;
   IUeGui::ISmsComposeMode& composeSms() override;
   int getAction() override;
   void acceptCallback(IUeGui::Callback acceptCallback) override;
@@ -39,6 +42,7 @@ class UserPort : public IUserPort {
   IUserEventsHandler* handler = nullptr;
   int action = NO_ACTION;
   IUeGui::Callback callback;
+  SmsDb smsDb;
   void onAcceptCallback(IUeGui::IListViewMode& menu);
 };
 

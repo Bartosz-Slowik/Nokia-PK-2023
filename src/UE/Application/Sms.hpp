@@ -9,7 +9,6 @@ class Sms {
   std::string text;
   common::PhoneNumber from;
   common::PhoneNumber to;
-  bool read = false;
   bool received = true;
   std::chrono::time_point<std::chrono::system_clock> receiveTime;
 
@@ -21,13 +20,10 @@ class Sms {
   Sms(const std::string& text,
       const common::PhoneNumber& from,
       const common::PhoneNumber& to,
-      bool read,
       bool received,
       const std::chrono::time_point<std::chrono::system_clock>& receiveTime);
 
-  void markAsRead();
   void markAsNotReceived();
-  bool isRead() const;
   bool isReceived() const;
   std::string getText() const;
 

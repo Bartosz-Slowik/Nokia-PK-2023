@@ -23,6 +23,9 @@ class IUserPortMock : public IUserPort {
   MOCK_METHOD(void, showConnecting, (), (final));
   MOCK_METHOD(void, showConnected, (), (final));
   MOCK_METHOD(void, showNewSmsNotification, (), (final));
+  MOCK_METHOD(void, showSms, (size_t), (final));
+  MOCK_METHOD(void, showSmsList, (), (final));
+  MOCK_METHOD(SmsDb&, getSmsDb, (), (final));
   MOCK_METHOD(IUeGui::ISmsComposeMode&, composeSms, (), (final));
   MOCK_METHOD(int, getAction, (), (final));
   MOCK_METHOD(void, acceptCallback, (IUeGui::Callback), (final));

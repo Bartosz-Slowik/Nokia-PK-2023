@@ -1,6 +1,7 @@
 #include "ConnectedState.hpp"
 #include "NotConnectedState.hpp"
 #include "SendingSmsState.hpp"
+#include "ViewSmsListState.hpp"
 
 namespace {
 enum { SENDING_SMS = 0, VIEW_SMS_LIST = 1, DIAL = 2 };
@@ -23,11 +24,14 @@ void ConnectedState::handleSms(const Sms& sms) {
   logger.logInfo("sms: from ", sms.getFrom(), " message: ", sms.getText(),
                  " is being handled");
   context.user.showNewSmsNotification();
-  context.smsDb.addReceivedSms(sms);
+  context.user.getSmsDb().addReceivedSms(sms);
 }
 
 void ConnectedState::acceptButton() {
   switch (context.user.getAction()) {
+    case VIEW_SMS_LIST:
+      context.setState<ViewSmsListState>();
+      break;
     case SENDING_SMS:
       context.setState<SendingSmsState>();
       break;

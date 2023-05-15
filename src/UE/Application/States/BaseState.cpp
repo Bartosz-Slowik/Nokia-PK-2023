@@ -31,7 +31,7 @@ void BaseState::handleAttachReject() {
 void BaseState::handleDisconnected() {
   logger.logError("Uexpected: handleDisconnected");
 }
-void BaseState::handleSms(const Sms& sms) {
+void BaseState::handleSms(const Sms&) {
   logger.logError("Uexpected: handleSms");
 }
 

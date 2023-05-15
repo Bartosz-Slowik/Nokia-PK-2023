@@ -53,9 +53,8 @@ void BtsPort::handleMessage(BinaryMessage msg) {
       case common::MessageId::Sms: {
         auto action = reader.readNumber<std::uint8_t>();
         if (action == 0) {
-          const auto sms =
-              Sms{reader.readRemainingText(),      from, to, false, true,
-                  std::chrono::system_clock::now()};
+          const auto sms = Sms{reader.readRemainingText(), from, to, true,
+                               std::chrono::system_clock::now()};
           handler->handleSms(sms);
         }
         break;
