@@ -9,7 +9,7 @@ DialState::DialState(Context& context, IUeGui::IDialMode& iDialMode)
 // TODO idialmode argument fix
 
 void DialState::acceptButton() {
-  // context.setState<TalkingState>(iDialMode.getPhoneNumber());
+  // ToDo Implement TalkingState and set it here
 }
 
 void DialState::rejectButton() {

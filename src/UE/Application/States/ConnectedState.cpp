@@ -57,7 +57,7 @@ void ConnectedState::handleSendCallAccept(common::PhoneNumber phoneNumber) {
   setSenderPhoneNumber({});
   context.user.callAchieved(phoneNumber);
   context.bts.sendCallAccept(phoneNumber);
-  // context.setState<TalkingState>(phoneNumber);
+  // ToDo Implement TalkingState and set it here
 }
 
 void ConnectedState::setSenderPhoneNumber(common::PhoneNumber phoneNumber) {
