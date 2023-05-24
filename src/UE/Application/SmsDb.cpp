@@ -8,8 +8,8 @@ void SmsDb::addReceivedSms(const Sms& sms) {
   smsMessages.emplace_back(sms, SmsState::NotViewed);
 }
 
-void SmsDb::addSms(const Sms& sms) {
-  smsMessages.emplace_back(sms, SmsState::NotViewed);
+void SmsDb::addSentSms(const Sms& sms) {
+  smsMessages.emplace_back(sms, SmsState::Viewed);
 }
 
 void ue::SmsDb::markLastSmsSentAsFailed() {

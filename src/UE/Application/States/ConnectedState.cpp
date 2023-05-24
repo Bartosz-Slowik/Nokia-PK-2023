@@ -44,7 +44,7 @@ void ConnectedState::acceptButton() {
 void ConnectedState::rejectButton() {}
 
 void ConnectedState::handleFailedSmsSend() {
-  context.smsDb.markLastSmsSentAsFailed();
+  context.user.getSmsDb().markLastSmsSentAsFailed();
 }
 
 void ConnectedState::handleSendCallRequest(
