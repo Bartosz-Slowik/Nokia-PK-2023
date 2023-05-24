@@ -39,7 +39,6 @@ void UserPort::showConnected() {
   }
   menu.addSelectionListItem("Dial", "");
 
-
   gui.setAcceptCallback([this, &menu] { onAcceptCallback(menu); });
 }
 

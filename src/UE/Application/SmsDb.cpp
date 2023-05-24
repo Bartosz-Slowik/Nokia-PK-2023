@@ -5,11 +5,13 @@
 namespace ue {
 
 void SmsDb::addReceivedSms(const Sms& sms) {
-  smsMessages.emplace_back(sms, SmsState::NotViewed);
+  smsMessages.insert(smsMessages.begin(),
+                     std::make_pair(sms, SmsState::NotViewed));
 }
 
 void SmsDb::addSentSms(const Sms& sms) {
-  smsMessages.emplace_back(sms, SmsState::Viewed);
+  smsMessages.insert(smsMessages.begin(),
+                     std::make_pair(sms, SmsState::Viewed));
 }
 
 void ue::SmsDb::markLastSmsSentAsFailed() {
