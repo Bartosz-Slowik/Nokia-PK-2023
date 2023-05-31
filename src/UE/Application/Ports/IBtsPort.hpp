@@ -17,6 +17,7 @@ class IBtsEventsHandler {
   virtual void handleSms(const Sms& sms) = 0;
   virtual void handleFailedSmsSend() = 0;
   virtual void handleCallRequest(common::PhoneNumber) = 0;
+  virtual void handleCallDrop(common::PhoneNumber) = 0;
   virtual void handleUnknownRecipientCallRequest(common::PhoneNumber) = 0;
 };
 

@@ -17,6 +17,7 @@ class IBtsEventsHandlerMock : public IBtsEventsHandler {
   MOCK_METHOD(void, handleSms, (const Sms& sms), (final));
   MOCK_METHOD(void, handleFailedSmsSend, (), (final));
   MOCK_METHOD(void, handleCallRequest, (common::PhoneNumber), (final));
+  MOCK_METHOD(void, handleCallDrop, (common::PhoneNumber), (final));
   MOCK_METHOD(void,
               handleUnknownRecipientCallRequest,
               (common::PhoneNumber),
