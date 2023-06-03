@@ -12,7 +12,7 @@ void SendingSmsState::acceptButton() {
   common::PhoneNumber toPhoneNumber = iSmsComposeMode.getPhoneNumber();
   Sms sms = Sms{text, context.bts.getOwnPhoneNumber(), toPhoneNumber, true,
                 std::chrono::system_clock::now()};
-  context.smsDb.addSms(sms);
+  context.user.getSmsDb().addSentSms(sms);
   context.bts.sendSms(sms);
   context.setState<ConnectedState>();
 }
