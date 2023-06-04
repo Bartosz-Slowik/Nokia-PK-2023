@@ -58,14 +58,25 @@ void UserPort::showSmsList() {
   gui.showNewSms(false);
   IUeGui::IListViewMode &listMode = gui.setListViewMode();
   listMode.clearSelectionList();
-  for (const auto &sms : smsDb.getSmsMessages()) {
-    std::string header = "from " + common::to_string(sms.first.getFrom()) +
-                         " to " + common::to_string(sms.first.getTo());
+
+  for (const auto& sms : smsDb.getSmsMessages()) {
+    std::string header{""};
+    if (sms.first.getFrom() == phoneNumber &&
+        sms.first.getTo() == phoneNumber) {
+      header = "From/To: " + common::to_string(sms.first.getTo());
+    } else if (sms.first.getFrom() == phoneNumber) {
+      header = " To : " + common::to_string(sms.first.getTo());
+    } else if (sms.first.getTo() == phoneNumber) {
+      header = "From: " + common::to_string(sms.first.getFrom());
+    }
+    
     if (!sms.first.isReceived()) {
       header = "Fail! " + header;
     }
+
     listMode.addSelectionListItem(header, "");
   }
+
   gui.setAcceptCallback([this, &listMode] { onAcceptCallback(listMode); });
 }
 

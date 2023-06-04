@@ -12,7 +12,7 @@ class SmsDbMock : public SmsDb {
   ~SmsDbMock() override = default;
 
   MOCK_METHOD(void, addReceivedSms, (const Sms&), (final));
-  MOCK_METHOD(void, addSms, (const Sms&), (final));
+  MOCK_METHOD(void, addSentSms, (const Sms&), (final));
 };
 
 }  // namespace ue
