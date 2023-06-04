@@ -75,6 +75,13 @@ void ConnectedState::handleCallRequest(common::PhoneNumber phoneNumber) {
   context.timer.startTimer(30s);
 }
 
+void ConnectedState::handleCallDrop(common::PhoneNumber phoneNumber) {
+  context.user.showPartnerNotAvailable(phoneNumber);
+  setSenderPhoneNumber({});
+  context.user.showConnected();
+  context.timer.stopTimer();
+}
+
 void ConnectedState::handleSendCallDrop(
     common::PhoneNumber receiverPhoneNumber) {
   context.timer.stopTimer();

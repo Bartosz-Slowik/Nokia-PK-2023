@@ -33,6 +33,7 @@ class Application : public IEventsHandler {
   void handleFailedSmsSend() override;
   void handleSendCallRequest(common::PhoneNumber) override;
   void handleSendCallDrop(common::PhoneNumber) override;
+  void handleCallDrop(common::PhoneNumber) override;
   void handleCallRequest(common::PhoneNumber) override;
   void handleSendCallAccept(common::PhoneNumber) override;
   void handleUnknownRecipientCallRequest(common::PhoneNumber) override;

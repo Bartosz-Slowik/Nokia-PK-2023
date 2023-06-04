@@ -17,6 +17,7 @@ public:
   void handleFailedSmsSend();
   void handleSendCallRequest(common::PhoneNumber) override;
   void handleSendCallDrop(common::PhoneNumber) override;
+  void handleCallDrop(common::PhoneNumber) override;
   void handleCallRequest(common::PhoneNumber) override;
   void setSenderPhoneNumber(common::PhoneNumber senderPhoneNumber);
   void handleSendCallAccept(common::PhoneNumber) override;

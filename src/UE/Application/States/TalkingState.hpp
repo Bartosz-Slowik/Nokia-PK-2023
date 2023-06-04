@@ -1,8 +1,17 @@
+#pragma once
+
 #include "ConnectedState.hpp"
 
 namespace ue {
+  
 class TalkingState : public ConnectedState {
-public:
+ private:
+  common::PhoneNumber caller;
+
+ public:
   TalkingState(Context &context);
+  void handleCallDrop(common::PhoneNumber) override;
+  void handleSendCallDrop(common::PhoneNumber) override;
 };
-} // namespace ue
+
+}  // namespace ue

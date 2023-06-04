@@ -27,10 +27,11 @@ void BaseState::handleAttachReject() {
 }
 
 void BaseState::handleDisconnected() {
-  logger.logError("Uexpected: handleDisconnected");
+  logger.logError("Unexpected: handleDisconnected");
 }
-void BaseState::handleSms(const Sms &) {
-  logger.logError("Uexpected: handleSms");
+
+void BaseState::handleSms(const Sms&) {
+  logger.logError("Unexpected: handleSms");
 }
 
 void BaseState::handleFailedSmsSend() {
@@ -38,24 +39,28 @@ void BaseState::handleFailedSmsSend() {
 }
 
 void BaseState::handleSendCallRequest(common::PhoneNumber receiverPhoneNumber) {
-  logger.logError("Uexpected: handleCallRequest: ", receiverPhoneNumber);
+  logger.logError("Unexpected: handleCallRequest: ", receiverPhoneNumber);
 }
 
 void BaseState::handleSendCallDrop(common::PhoneNumber receiverPhoneNumber) {
-  logger.logError("Uexpected: handleCallDropSender: ", receiverPhoneNumber);
+  logger.logError("Unexpected: handleCallDropSender: ", receiverPhoneNumber);
+}
+
+void BaseState::handleCallDrop(common::PhoneNumber receiverPhoneNumber) {
+  logger.logError("Unexpected: handleCallDrop: ", receiverPhoneNumber);
 }
 
 void BaseState::handleCallRequest(common::PhoneNumber phoneNumber) {
-  logger.logError("Uexpected: handleCallRequest: ", phoneNumber);
+  logger.logError("Unexpected: handleCallRequest: ", phoneNumber);
 }
 
 void BaseState::handleSendCallAccept(common::PhoneNumber receiverPhoneNumber) {
-  logger.logError("Uexpected: HandleSendCallAccept: ", receiverPhoneNumber);
+  logger.logError("Unexpected: handleCallAccept: ", receiverPhoneNumber);
 }
 
 void BaseState::handleUnknownRecipientCallRequest(
     common::PhoneNumber phoneNumber) {
-  logger.logError("Uexpected: handleUnknownRecipientCallRequest: ",
+  logger.logError("Unexpected: handleUnknownRecipientCallRequest: ",
                   phoneNumber);
 }
 
