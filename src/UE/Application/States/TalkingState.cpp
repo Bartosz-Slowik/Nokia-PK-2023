@@ -2,6 +2,10 @@
 
 namespace ue {
 
+TalkingState::TalkingState(Context &context) : ConnectedState(context) {
+  context.user.showTalking();
+}
+
 void TalkingState::handleSendCallDrop(common::PhoneNumber) {
   context.bts.sendCallDrop(caller);
   context.setState<ConnectedState>();
@@ -14,4 +18,5 @@ void TalkingState::handleCallDrop(common::PhoneNumber phoneNumber) {
     context.user.showConnected();
   }
 }
+  
 }  // namespace ue

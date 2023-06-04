@@ -3,14 +3,12 @@
 
 namespace ue {
 
-BaseState::BaseState(Context& context, const std::string& name)
+BaseState::BaseState(Context &context, const std::string &name)
     : context(context), logger(context.logger, "[" + name + "]") {
   logger.logDebug("entry");
 }
 
-BaseState::~BaseState() {
-  logger.logDebug("exit");
-}
+BaseState::~BaseState() { logger.logDebug("exit"); }
 
 void BaseState::handleTimeout() {
   logger.logError("Unexpected: handleTimeout");
@@ -31,6 +29,7 @@ void BaseState::handleAttachReject() {
 void BaseState::handleDisconnected() {
   logger.logError("Unexpected: handleDisconnected");
 }
+
 void BaseState::handleSms(const Sms&) {
   logger.logError("Unexpected: handleSms");
 }
@@ -65,4 +64,4 @@ void BaseState::handleUnknownRecipientCallRequest(
                   phoneNumber);
 }
 
-}  // namespace ue
+} // namespace ue
