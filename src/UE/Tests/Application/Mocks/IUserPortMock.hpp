@@ -1,12 +1,12 @@
 #pragma once
 
-#include <gmock/gmock.h>
 #include "Ports/IUserPort.hpp"
+#include <gmock/gmock.h>
 
 namespace ue {
 
 class IUserEventsHandlerMock : public IUserEventsHandler {
- public:
+public:
   IUserEventsHandlerMock();
   ~IUserEventsHandlerMock() override;
   MOCK_METHOD(void, handleSendCallRequest, (common::PhoneNumber), (final));
@@ -15,7 +15,7 @@ class IUserEventsHandlerMock : public IUserEventsHandler {
 };
 
 class IUserPortMock : public IUserPort {
- public:
+public:
   IUserPortMock();
   ~IUserPortMock() override;
 
@@ -25,18 +25,18 @@ class IUserPortMock : public IUserPort {
   MOCK_METHOD(void, showNewSmsNotification, (), (final));
   MOCK_METHOD(void, showSms, (size_t), (final));
   MOCK_METHOD(void, showSmsList, (), (final));
-  MOCK_METHOD(SmsDb&, getSmsDb, (), (final));
-  MOCK_METHOD(IUeGui::ISmsComposeMode&, composeSms, (), (final));
+  MOCK_METHOD(SmsDb &, getSmsDb, (), (final));
+  MOCK_METHOD(IUeGui::ISmsComposeMode &, composeSms, (), (final));
   MOCK_METHOD(int, getAction, (), (final));
   MOCK_METHOD(void, acceptCallback, (IUeGui::Callback), (final));
   MOCK_METHOD(void, rejectCallback, (IUeGui::Callback), (final));
   MOCK_METHOD(void, showEnterPhoneNumber, (), (final));
+  MOCK_METHOD(void, showCallRequest, (common::PhoneNumber from), (final));
+  MOCK_METHOD(void, showTalking, (), (final));
   MOCK_METHOD(void, showDialing, (common::PhoneNumber phoneNumber), (final));
   MOCK_METHOD(void, callAchieved, (common::PhoneNumber phoneNumber), (final));
-  MOCK_METHOD(void,
-              showPartnerNotAvailable,
-              (common::PhoneNumber phoneNumber),
+  MOCK_METHOD(void, showPartnerNotAvailable, (common::PhoneNumber phoneNumber),
               (final));
 };
 
-}  // namespace ue
+} // namespace ue
