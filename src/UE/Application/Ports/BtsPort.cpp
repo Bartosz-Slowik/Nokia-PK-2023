@@ -135,6 +135,7 @@ void BtsPort::sendCallDrop(common::PhoneNumber receiverPhoneNumber) {
 
 void BtsPort::sendCallTalk(common::PhoneNumber receiverPhoneNumber,
                            std::string message) {
+  logger.logDebug("sendCalTalk: ", receiverPhoneNumber);
   common::OutgoingMessage outgoingMsg{common::MessageId::CallTalk, phoneNumber,
                                       receiverPhoneNumber};
   outgoingMsg.writeText(message);

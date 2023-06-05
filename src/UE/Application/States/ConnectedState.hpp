@@ -10,16 +10,16 @@ class ConnectedState : public BaseState {
 
  public:
   ConnectedState(Context& context);
-  void handleDisconnected() final;
+  void handleDisconnected() override;
   void handleSms(const Sms& sms) final;
   virtual void acceptButton();
   virtual void rejectButton();
-  void handleFailedSmsSend();
+  void handleFailedSmsSend() override;
   void handleSendCallRequest(common::PhoneNumber) override;
   void handleSendCallDrop(common::PhoneNumber) override;
   void handleCallDrop(common::PhoneNumber) override;
   void handleCallRequest(common::PhoneNumber) override;
-  void setSenderPhoneNumber(common::PhoneNumber senderPhoneNumber);
+  void setSenderPhoneNumber(common::PhoneNumber);
   void handleSendCallAccept(common::PhoneNumber) override;
   void handleUnknownRecipientCallRequest(
       common::PhoneNumber phoneNumber) override;

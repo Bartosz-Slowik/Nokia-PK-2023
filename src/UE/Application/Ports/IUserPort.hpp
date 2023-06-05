@@ -8,10 +8,11 @@ namespace ue {
 class IUserEventsHandler {
  public:
   virtual ~IUserEventsHandler() = default;
-  virtual void handleSendCallDrop(common::PhoneNumber) = 0;
+
   virtual void handleSendCallRequest(common::PhoneNumber) = 0;
   virtual void handleSendCallAccept(common::PhoneNumber) = 0;
   virtual void handleSendCallTalk(common::PhoneNumber, std::string) = 0;
+  virtual void handleSendCallDrop(common::PhoneNumber) = 0;
   virtual void handleStartDial() = 0;
 };
 
@@ -32,7 +33,7 @@ class IUserPort {
   virtual void rejectCallback(IUeGui::Callback rejectCallback) = 0;
   virtual void showEnterPhoneNumber() = 0;
   virtual void showDialing(common::PhoneNumber) = 0;
-  virtual void callAchieved(common::PhoneNumber) = 0;
+  virtual void showCallAchieved(common::PhoneNumber) = 0;
   virtual void showPartnerNotAvailable(common::PhoneNumber) = 0;
   virtual void showCallRequest(common::PhoneNumber from) = 0;
   virtual void showTalking(common::PhoneNumber) = 0;

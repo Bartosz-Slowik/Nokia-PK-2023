@@ -32,7 +32,7 @@ class UserPort : public IUserPort {
   void rejectCallback(IUeGui::Callback rejectCallback) override;
   void showEnterPhoneNumber() override;
   void showDialing(common::PhoneNumber) override;
-  void callAchieved(common::PhoneNumber) override;
+  void showCallAchieved(common::PhoneNumber) override;
   void showPartnerNotAvailable(common::PhoneNumber) override;
   void showCallRequest(common::PhoneNumber) override;
   void showTalking(common::PhoneNumber) override;

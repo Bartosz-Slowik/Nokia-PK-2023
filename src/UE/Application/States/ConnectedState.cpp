@@ -58,14 +58,6 @@ void ConnectedState::handleSendCallRequest(
   context.user.showDialing(receiverPhoneNumber);
 }
 
-/*void ConnectedState::handleSendCallAccept(common::PhoneNumber phoneNumber) {
-  context.timer.stopTimer();
-  setSenderPhoneNumber({});
-  context.user.callAchieved(phoneNumber);
-  context.bts.sendCallAccept(phoneNumber);
-  // ToDo Implement TalkingState and set it here
-}*/
-
 void ConnectedState::setSenderPhoneNumber(common::PhoneNumber phoneNumber) {
   this->senderPhoneNumber = phoneNumber;
 }
@@ -83,22 +75,21 @@ void ConnectedState::handleCallDrop(common::PhoneNumber phoneNumber) {
   context.timer.stopTimer();
 }
 
-void ConnectedState::handleSendCallDrop(
-    common::PhoneNumber receiverPhoneNumber) {
+void ConnectedState::handleSendCallDrop(common::PhoneNumber) {
   context.timer.stopTimer();
   context.bts.sendCallDrop(senderPhoneNumber);
   setSenderPhoneNumber({});
   context.user.showConnected();
 }
-void ConnectedState::handleSendCallAccept(common::PhoneNumber to) {
+
+void ConnectedState::handleSendCallAccept(common::PhoneNumber phoneNumber) {
   context.timer.stopTimer();
   setSenderPhoneNumber({});
-  context.user.callAchieved(to);
-  context.bts.sendCallAccept(to);
-  context.setState<TalkingState>(to);
+  context.user.showCallAchieved(phoneNumber);
+  context.bts.sendCallAccept(phoneNumber);
+  context.setState<TalkingState>(phoneNumber);
 }
-void ConnectedState::handleUnknownRecipientCallRequest(
-    common::PhoneNumber phoneNumber) {
+void ConnectedState::handleUnknownRecipientCallRequest(common::PhoneNumber) {
   context.timer.stopTimer();
   context.user.showPartnerNotAvailable(senderPhoneNumber);
   setSenderPhoneNumber({});
@@ -116,7 +107,7 @@ void ConnectedState::handleStartDial() {
 void ConnectedState::handleCallAccept(common::PhoneNumber phoneNumber) {
   context.timer.stopTimer();
   setSenderPhoneNumber({});
-  context.user.callAchieved(phoneNumber);
+  context.user.showCallAchieved(phoneNumber);
   context.setState<TalkingState>(phoneNumber);
 }
 

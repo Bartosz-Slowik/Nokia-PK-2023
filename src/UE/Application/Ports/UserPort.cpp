@@ -126,20 +126,18 @@ void UserPort::showEnterPhoneNumber() {
       [&]() { handler->handleSendCallDrop(dialModeMenu.getPhoneNumber()); });
 }
 
-void UserPort::showDialing(common::PhoneNumber senderPhoneNumber) {
-  logger.logDebug("Trying to connect with: ", senderPhoneNumber);
+void UserPort::showDialing(common::PhoneNumber phoneNumber) {
+  logger.logDebug("Trying to connect with: ", phoneNumber);
   IUeGui::ITextMode& dialModeMenu = gui.setAlertMode();
-  dialModeMenu.setText("Trying to\nconnect with:\n" +
-                       to_string(senderPhoneNumber));
+  dialModeMenu.setText("Trying to\nconnect with:\n" + to_string(phoneNumber));
   gui.setAcceptCallback([&]() {});
-  gui.setRejectCallback(
-      [&]() { handler->handleSendCallDrop(senderPhoneNumber); });
+  gui.setRejectCallback([&]() { handler->handleSendCallDrop(phoneNumber); });
 }
 
-void UserPort::callAchieved(common::PhoneNumber senderPhoneNumber) {
-  logger.logDebug("Talking mode with: ", senderPhoneNumber);
+void UserPort::showCallAchieved(common::PhoneNumber phoneNumber) {
+  logger.logDebug("Talking mode with: ", phoneNumber);
   auto& callMode = gui.setAlertMode();
-  callMode.setText("Call from: " + to_string(senderPhoneNumber));
+  callMode.setText("Call from: " + to_string(phoneNumber));
 }
 
 void UserPort::showPartnerNotAvailable(common::PhoneNumber phoneNumber) {
@@ -150,11 +148,15 @@ void UserPort::showPartnerNotAvailable(common::PhoneNumber phoneNumber) {
   gui.setRejectCallback(reject);
 }
 
-void UserPort::showCallRequest(common::PhoneNumber from) {
+void UserPort::showCallRequest(common::PhoneNumber phoneNumber) {
   auto& alertMode = gui.setAlertMode();
-  alertMode.setText("Incoming call from: " + to_string(from));
-  auto accept = [&, from]() { handler->handleSendCallAccept(from); };
-  auto reject = [&, from]() { handler->handleSendCallDrop(from); };
+  alertMode.setText("Incoming call from: " + to_string(phoneNumber));
+  auto accept = [&, phoneNumber]() {
+    handler->handleSendCallAccept(phoneNumber);
+  };
+  auto reject = [&, phoneNumber]() {
+    handler->handleSendCallDrop(phoneNumber);
+  };
   gui.setAcceptCallback(accept);
   gui.setRejectCallback(reject);
 }

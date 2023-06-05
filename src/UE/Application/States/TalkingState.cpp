@@ -1,4 +1,5 @@
 #include "TalkingState.hpp"
+#include "NotConnectedState.hpp"
 
 namespace ue {
 
@@ -8,6 +9,10 @@ TalkingState::TalkingState(Context& context, common::PhoneNumber caller)
     : ConnectedState(context), caller{caller} {
   context.user.showTalking(caller);
   context.timer.startTimer(120s);
+}
+
+void TalkingState::handleDisconnected() {
+  context.setState<NotConnectedState>();
 }
 
 void TalkingState::handleTimeout() {

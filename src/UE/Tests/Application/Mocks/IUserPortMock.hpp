@@ -39,7 +39,10 @@ class IUserPortMock : public IUserPort {
   MOCK_METHOD(void, showCallRequest, (common::PhoneNumber from), (final));
   MOCK_METHOD(void, showTalking, (common::PhoneNumber), (final));
   MOCK_METHOD(void, showDialing, (common::PhoneNumber phoneNumber), (final));
-  MOCK_METHOD(void, callAchieved, (common::PhoneNumber phoneNumber), (final));
+  MOCK_METHOD(void,
+              showCallAchieved,
+              (common::PhoneNumber phoneNumber),
+              (final));
   MOCK_METHOD(void,
               showPartnerNotAvailable,
               (common::PhoneNumber phoneNumber),
