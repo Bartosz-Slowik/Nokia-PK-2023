@@ -71,4 +71,27 @@ void Application::handleUnknownRecipientCallRequest(
   context.state->handleUnknownRecipientCallRequest(phoneNumber);
 }
 
+void Application::handleCallAccept(common::PhoneNumber phoneNumber) {
+  context.state->handleCallAccept(phoneNumber);
+}
+
+void Application::handleUnknownRecipientCallTalk(
+    common::PhoneNumber phoneNumber) {
+  context.state->handleUnknownRecipientCallTalk(phoneNumber);
+}
+
+void Application::handleCallTalk(common::PhoneNumber phoneNumber,
+                                 std::string message) {
+  context.state->handleCallTalk(phoneNumber, message);
+}
+
+void Application::handleSendCallTalk(common::PhoneNumber receiverPhoneNumber,
+                                     std::string message) {
+  context.state->handleSendCallTalk(receiverPhoneNumber, message);
+}
+
+void Application::handleStartDial() {
+  context.state->handleStartDial();
+}
+
 }  // namespace ue

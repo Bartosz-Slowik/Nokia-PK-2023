@@ -2,8 +2,18 @@
 
 namespace ue {
 
-TalkingState::TalkingState(Context &context) : ConnectedState(context) {
-  context.user.showTalking();
+using namespace std::chrono_literals;
+
+TalkingState::TalkingState(Context& context, common::PhoneNumber caller)
+    : ConnectedState(context), caller{caller} {
+  context.user.showTalking(caller);
+  context.timer.startTimer(120s);
+}
+
+void TalkingState::handleTimeout() {
+  context.bts.sendCallDrop(caller);
+  context.setState<ConnectedState>();
+  context.user.showConnected();
 }
 
 void TalkingState::handleSendCallDrop(common::PhoneNumber) {
@@ -18,5 +28,27 @@ void TalkingState::handleCallDrop(common::PhoneNumber phoneNumber) {
     context.user.showConnected();
   }
 }
-  
+
+void TalkingState::handleCallTalk(common::PhoneNumber phoneNumber,
+                                  std::string message) {
+  context.timer.stopTimer();
+  context.user.showNewCallTalk(phoneNumber, message);
+  context.timer.startTimer(120s);
+}
+
+void TalkingState::handleUnknownRecipientCallTalk(
+    common::PhoneNumber phoneNumber) {
+  context.timer.stopTimer();
+  context.user.showPartnerNotAvailable(phoneNumber);
+  context.setState<ConnectedState>();
+}
+
+void TalkingState::handleSendCallTalk(common::PhoneNumber phoneNumber,
+                                      std::string message) {
+  context.timer.stopTimer();
+  context.bts.sendCallTalk(phoneNumber, message);
+  using namespace std::chrono_literals;
+  context.timer.startTimer(120000ms);
+}
+
 }  // namespace ue
