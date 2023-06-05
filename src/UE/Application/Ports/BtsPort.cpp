@@ -64,10 +64,15 @@ void BtsPort::handleMessage(BinaryMessage msg) {
         break;
       }
       case common::MessageId::CallAccepted: {
+        handler->handleCallAccept(from);
         break;
       }
       case common::MessageId::CallDropped: {
         handler->handleCallDrop(from);
+        break;
+      }
+      case common::MessageId::CallTalk: {
+        handler->handleCallTalk(from, reader.readRemainingText());
         break;
       }
       case common::MessageId::UnknownRecipient: {
@@ -126,6 +131,15 @@ void BtsPort::sendCallDrop(common::PhoneNumber receiverPhoneNumber) {
   common::OutgoingMessage msg{common::MessageId::CallDropped, phoneNumber,
                               receiverPhoneNumber};
   transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendCallTalk(common::PhoneNumber receiverPhoneNumber,
+                           std::string message) {
+  logger.logDebug("sendCalTalk: ", receiverPhoneNumber);
+  common::OutgoingMessage outgoingMsg{common::MessageId::CallTalk, phoneNumber,
+                                      receiverPhoneNumber};
+  outgoingMsg.writeText(message);
+  transport.sendMessage(outgoingMsg.getMessage());
 }
 
 }  // namespace ue

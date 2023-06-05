@@ -17,8 +17,11 @@ class IBtsEventsHandler {
   virtual void handleSms(const Sms& sms) = 0;
   virtual void handleFailedSmsSend() = 0;
   virtual void handleCallRequest(common::PhoneNumber) = 0;
+  virtual void handleCallAccept(common::PhoneNumber) = 0;
+  virtual void handleCallTalk(common::PhoneNumber, std::string) = 0;
   virtual void handleCallDrop(common::PhoneNumber) = 0;
   virtual void handleUnknownRecipientCallRequest(common::PhoneNumber) = 0;
+  virtual void handleUnknownRecipientCallTalk(common::PhoneNumber) = 0;
 };
 
 class IBtsPort {
@@ -30,6 +33,7 @@ class IBtsPort {
   virtual void sendSms(const Sms& sms) = 0;
   virtual void sendCallRequest(common::PhoneNumber) = 0;
   virtual void sendCallAccept(common::PhoneNumber) = 0;
+  virtual void sendCallTalk(common::PhoneNumber, std::string) = 0;
   virtual void sendCallDrop(common::PhoneNumber) = 0;
 };
 
