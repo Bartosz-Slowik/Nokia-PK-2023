@@ -15,6 +15,7 @@ class TalkingState : public ConnectedState {
   void handleSendCallDrop(common::PhoneNumber) override;
   void handleCallTalk(common::PhoneNumber phoneNumber,
                       std::string message) override;
+  void handleCallRequest(common::PhoneNumber) override;
   void handleUnknownRecipientCallTalk(common::PhoneNumber) override;
   void handleSendCallTalk(common::PhoneNumber phoneNumber,
                           std::string message) override;

@@ -167,6 +167,7 @@ void UserPort::showNewCallTalk(common::PhoneNumber phoneNumber,
 
 void UserPort::showTalking(common::PhoneNumber phoneNumber) {
   auto& callMode = gui.setCallMode();
+  callMode.clearIncomingText();
   auto accept = [&, phoneNumber]() {
     handler->handleSendCallTalk(phoneNumber, callMode.getOutgoingText());
     callMode.appendIncomingText("Me: " + callMode.getOutgoingText());

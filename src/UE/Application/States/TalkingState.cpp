@@ -47,8 +47,11 @@ void TalkingState::handleSendCallTalk(common::PhoneNumber phoneNumber,
                                       std::string message) {
   context.timer.stopTimer();
   context.bts.sendCallTalk(phoneNumber, message);
-  using namespace std::chrono_literals;
-  context.timer.startTimer(120000ms);
+  context.timer.startTimer(120s);
+}
+
+void TalkingState::handleCallRequest(common::PhoneNumber phoneNumber) {
+  context.bts.sendCallDrop(phoneNumber);
 }
 
 }  // namespace ue
