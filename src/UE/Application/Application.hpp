@@ -37,6 +37,8 @@ class Application : public IEventsHandler {
   void handleCallRequest(common::PhoneNumber) override;
   void handleSendCallAccept(common::PhoneNumber) override;
   void handleUnknownRecipientCallRequest(common::PhoneNumber) override;
+  void handleSendCallTalk(const std::string& message) override;
+  void handleReceiveCallMessage(const std::string& text) override;
 
  private:
   Context context;

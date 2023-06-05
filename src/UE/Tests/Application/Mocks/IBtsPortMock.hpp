@@ -22,6 +22,10 @@ class IBtsEventsHandlerMock : public IBtsEventsHandler {
               handleUnknownRecipientCallRequest,
               (common::PhoneNumber),
               (final));
+  MOCK_METHOD(void,
+              handleReceiveCallMessage,
+              (const std::string& text),
+              (final));
 };
 
 class IBtsPortMock : public IBtsPort {
@@ -35,6 +39,10 @@ class IBtsPortMock : public IBtsPort {
   MOCK_METHOD(void, sendCallRequest, (common::PhoneNumber), (final));
   MOCK_METHOD(void, sendCallAccept, (common::PhoneNumber), (final));
   MOCK_METHOD(void, sendCallDrop, (common::PhoneNumber), (final));
+  MOCK_METHOD(void,
+              sendCallTalkMessage,
+              (const std::string& message, common::PhoneNumber to),
+              (final));
 };
 
 }  // namespace ue

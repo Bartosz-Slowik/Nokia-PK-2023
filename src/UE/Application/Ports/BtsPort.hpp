@@ -21,6 +21,8 @@ class BtsPort : public IBtsPort {
   void sendCallRequest(common::PhoneNumber) override;
   void sendCallAccept(common::PhoneNumber) override;
   void sendCallDrop(common::PhoneNumber) override;
+  void sendCallTalkMessage(const std::string& message,
+                           common::PhoneNumber to) override;
 
  private:
   void handleDisconnected();

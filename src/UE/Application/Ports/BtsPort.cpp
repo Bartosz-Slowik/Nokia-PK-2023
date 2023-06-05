@@ -70,6 +70,10 @@ void BtsPort::handleMessage(BinaryMessage msg) {
         handler->handleCallDrop(from);
         break;
       }
+      case common::MessageId::CallTalk: {
+        handler->handleReceiveCallMessage(reader.readRemainingText());
+        break;
+      }
       case common::MessageId::UnknownRecipient: {
         auto failHeader = reader.readMessageHeader();
         if (failHeader.messageId == common::MessageId::Sms)
@@ -125,6 +129,13 @@ void BtsPort::sendCallDrop(common::PhoneNumber receiverPhoneNumber) {
   logger.logDebug("sendCallDrop: ", receiverPhoneNumber);
   common::OutgoingMessage msg{common::MessageId::CallDropped, phoneNumber,
                               receiverPhoneNumber};
+  transport.sendMessage(msg.getMessage());
+}
+void BtsPort::sendCallTalkMessage(const std::string& message,
+                                  common::PhoneNumber to) {
+  logger.logDebug("sendCallTalkMessage to: ", to);
+  common::OutgoingMessage msg{common::MessageId::CallTalk, phoneNumber, to};
+  msg.writeText(message);
   transport.sendMessage(msg.getMessage());
 }
 

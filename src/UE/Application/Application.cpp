@@ -71,4 +71,11 @@ void Application::handleUnknownRecipientCallRequest(
   context.state->handleUnknownRecipientCallRequest(phoneNumber);
 }
 
+void Application::handleSendCallTalk(const std::string& message) {
+  context.state->handleSendCallTalk(message);
+}
+void Application::handleReceiveCallMessage(const std::string& text) {
+  context.state->handleReceiveCallMessage(text);
+}
+
 }  // namespace ue

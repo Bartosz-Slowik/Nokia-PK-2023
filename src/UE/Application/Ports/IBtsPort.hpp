@@ -19,6 +19,7 @@ class IBtsEventsHandler {
   virtual void handleCallRequest(common::PhoneNumber) = 0;
   virtual void handleCallDrop(common::PhoneNumber) = 0;
   virtual void handleUnknownRecipientCallRequest(common::PhoneNumber) = 0;
+  virtual void handleReceiveCallMessage(const std::string& text) = 0;
 };
 
 class IBtsPort {
@@ -31,6 +32,8 @@ class IBtsPort {
   virtual void sendCallRequest(common::PhoneNumber) = 0;
   virtual void sendCallAccept(common::PhoneNumber) = 0;
   virtual void sendCallDrop(common::PhoneNumber) = 0;
+  virtual void sendCallTalkMessage(const std::string& message,
+                                   common::PhoneNumber to) = 0;
 };
 
 }  // namespace ue
