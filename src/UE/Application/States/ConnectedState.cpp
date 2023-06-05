@@ -63,9 +63,13 @@ void ConnectedState::setSenderPhoneNumber(common::PhoneNumber phoneNumber) {
 }
 
 void ConnectedState::handleCallRequest(common::PhoneNumber phoneNumber) {
-  using namespace std::chrono_literals;
-  context.user.showCallRequest(phoneNumber);
-  context.timer.startTimer(30s);
+  if (senderPhoneNumber.value != 0) {
+    context.bts.sendCallDrop(phoneNumber);
+  } else {
+    context.timer.startTimer(30s);
+    context.user.showCallRequest(phoneNumber);
+    setSenderPhoneNumber(phoneNumber);
+  }
 }
 
 void ConnectedState::handleCallDrop(common::PhoneNumber phoneNumber) {
