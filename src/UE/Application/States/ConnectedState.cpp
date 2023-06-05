@@ -63,20 +63,14 @@ void ConnectedState::setSenderPhoneNumber(common::PhoneNumber phoneNumber) {
 }
 
 void ConnectedState::handleCallRequest(common::PhoneNumber phoneNumber) {
-  if (senderPhoneNumber.value != 0) {
-    context.bts.sendCallDrop(phoneNumber);
-  } else {
-    context.timer.startTimer(30s);
-    context.user.showCallRequest(phoneNumber);
-    setSenderPhoneNumber(phoneNumber);
-  }
+  context.user.showCallRequest(phoneNumber);
+  setSenderPhoneNumber(phoneNumber);
 }
 
 void ConnectedState::handleCallDrop(common::PhoneNumber phoneNumber) {
   context.user.showPartnerNotAvailable(phoneNumber);
   setSenderPhoneNumber({});
   context.user.showConnected();
-  context.timer.stopTimer();
 }
 
 void ConnectedState::handleSendCallDrop(common::PhoneNumber) {
